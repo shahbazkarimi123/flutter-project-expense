@@ -1,3 +1,5 @@
+import '../widgets/chart.dart';
+
 import '../widgets/new_transaction.dart';
 
 import './widgets/transaction_list.dart';
@@ -13,9 +15,23 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Expenditure',
       theme: ThemeData(
-        primarySwatch:Colors.purple,
-        accentColor: Colors.amber,
-      ),
+          primarySwatch: Colors.green,
+          accentColor: Colors.amber,
+          fontFamily: 'QuickSans',
+          textTheme: ThemeData.light().textTheme.copyWith(
+              headline6: TextStyle(
+                fontFamily: 'Opensans',
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+              button: TextStyle(color: Colors.white)),
+          appBarTheme: AppBarTheme(
+              textTheme: ThemeData.light().textTheme.copyWith(
+                      headline6: TextStyle(
+                    fontFamily: 'OpenSans',
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  )))),
       home: MyHomePage(),
     );
   }
@@ -31,15 +47,26 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _userTransactions = [
-    Transaction(id: "Id1", title: "game", amount: 99.9, date: DateTime.now()),
-    Transaction(id: "Id2", title: "Shoe", amount: 53.7, date: DateTime.now()),
+    //   Transaction(id: "Id1", title: "game", amount: 99.9, date: DateTime.now()),
+    //   Transaction(id: "Id2", title: "Shoe", amount: 53.7, date: DateTime.now()),
+    //
   ];
+  List<Transaction> get _recentTransactions {
+    return _userTransactions.where((tx) {
+      return tx.date.isAfter(
+        DateTime.now().subtract(
+          Duration(days: 7),
+        ),
+      );
+    }).toList();
+  }
 
-  void _addNewTransaction(String txTitle, double txAmount) {
+  void _addNewTransaction(
+      String txTitle, double txAmount, DateTime chosenDate) {
     final newTx = Transaction(
         title: txTitle,
         amount: txAmount,
-        date: DateTime.now(),
+        date: chosenDate,
         id: DateTime.now().toString());
 
     setState(() {
@@ -60,6 +87,12 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void _deleteTransaction(String id) {
+    setState(() {
+      _userTransactions.removeWhere((tx) => tx.id == id);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,15 +110,8 @@ class _MyHomePageState extends State<MyHomePage> {
             // mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Container(
-                width: double.infinity,
-                child: Card(
-                  color: Theme.of(context).primaryColor,
-                  child: Text("Chart!"),
-                  elevation: 5,
-                ),
-              ),
-              TransactionList(_userTransactions),
+              Chart(_recentTransactions),
+              TransactionList(_userTransactions,_deleteTransaction),
             ]),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
