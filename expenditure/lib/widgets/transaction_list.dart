@@ -22,9 +22,10 @@ class TransactionList extends StatelessWidget {
                     height: 20,
                   ),
                   Container(
-                      height: 200,
+                      height: 250,
+                      width: 340,
                       child: Image.asset(
-                        'assets/images/waiting.png',
+                        'assets/images/shahbaz.png',
                         fit: BoxFit.cover,
                       )),
                 ],

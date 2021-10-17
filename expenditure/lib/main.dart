@@ -1,7 +1,5 @@
 import '../widgets/chart.dart';
-
 import '../widgets/new_transaction.dart';
-
 import './widgets/transaction_list.dart';
 import 'package:flutter/material.dart';
 import '../model/transaction.dart';
@@ -15,7 +13,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Expenditure',
       theme: ThemeData(
-          primarySwatch: Colors.green,
+          primarySwatch: Colors.blueGrey,
           accentColor: Colors.amber,
           fontFamily: 'QuickSans',
           textTheme: ThemeData.light().textTheme.copyWith(
